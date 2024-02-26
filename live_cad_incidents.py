@@ -10,7 +10,6 @@ database = 'reporting_system'
 username =  os.environ.get('DB_USERNAME')
 password =  os.environ.get('DB_PASSWORD')
 
-#Set SQL query to retrieve data
 sql_query = """
 WITH incidents AS
 (SELECT
@@ -115,17 +114,16 @@ ORDER BY
 	agency,incident, date DESC
 """
 
-#Set CSV file name
-output_file = 'C:\Clery\CAD\Live_Calls\cad_incidents_test.csv'
+#Set output file location
+output_file = 'C:\Clery\CAD\Live_Calls\cad_incidents.csv'
 
-#create the database connection string
+#Create the database connection string
 db_connection_string = f"mssql+pyodbc://{username}:{password}@{server}/{database}?driver=ODBC+Driver+17+for+SQL+Server"
 
-#create the SQLAlchemy engine
 engine = create_engine(db_connection_string)
 
-#execute query and retrieve results
+#Execute query and retrieve results
 df = pd.read_sql_query(sql=text(sql_query), con=engine.connect())
 
-#export to CSV
+#Export to CSV
 df.to_csv(output_file, index=False, float_format='{:.2f}'.format, encoding='utf-8')
