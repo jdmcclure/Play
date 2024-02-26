@@ -15,8 +15,7 @@ try:
 
 	sql_query = """
 	WITH incidents AS(
-SELECT 
-	--Transform charge to be more broad and easily understood
+	SELECT 
 	CASE
 		WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Warrant Arrest%'	THEN 'Warrant Arrest'
 		WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Theft%' THEN 'Theft'
@@ -213,7 +212,6 @@ SELECT
 		WHEN IncidentEvent.address_streetAddress LIKE '601 S Howes%' THEN 'University Services Center'
 		WHEN IncidentEvent.address_streetAddress LIKE '300 W Drake%' THEN 'VTH'
 		WHEN IncidentEvent.address_streetAddress LIKE '3745 E Prospect%' THEN 'Visitors Center'
-			--Else the physical address
 		WHEN IncidentEvent.address_streetAddress IS NULL THEN 'Missing Information'
 		ELSE IncidentEvent.address_streetAddress
 	END AS 'Location'
