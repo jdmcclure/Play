@@ -5,10 +5,6 @@ from openpyxl import Workbook
 import time
 import os
 
-server = '192.168.214.13'
-database = 'InformRMSReports'
-username = 'RMSREAD' #os.environ.get('RMS_User')
-password = 'RMSViews100!' #os.environ.get('RMS_PW')
 
 query = """
 SELECT
