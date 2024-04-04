@@ -1,3 +1,4 @@
+import traceback
 import pandas as pd
 from sqlalchemy import create_engine, text
 import pyodbc
@@ -39,7 +40,7 @@ try:
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%42-%' THEN 'Traffic Violation'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '603(1)%' THEN 'Traffic Violation'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Unregistered Vehicle%' THEN 'Traffic Violation'
-    				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Failed TO STOP AT RED LIGHT%' THEN 'Traffic Violation'
+    			WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Failed TO STOP AT RED LIGHT%' THEN 'Traffic Violation'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%No Proof of Insurance%' THEN 'Traffic Violation'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Expired Plates%' THEN 'Traffic Violation'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Speeding%' THEN 'Traffic Violation'
@@ -47,7 +48,7 @@ try:
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%FAILED TO SIGNAL FROM PARK%' THEN 'Traffic Violation'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '1409(2)%' THEN 'Traffic Violation'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%DROVE WRONG WAY%' THEN 'Traffic Violation'
-    				WHEN IncidentOffense.ViolationCodeReference_Description LIKE 'FC-17-70%' THEN 'False ID'
+    			WHEN IncidentOffense.ViolationCodeReference_Description LIKE 'FC-17-70%' THEN 'False ID'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Possessed (Fictitiou%' THEN 'False ID'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Bodily Waste%' THEN 'Depositing Bodily Waste'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Fire Agency%' THEN 'Assist to Fire Dept'
@@ -57,7 +58,7 @@ try:
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%AOA Larimer County%' THEN 'Assist to LCSO'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%AOA Fort Collins%' THEN 'Assist to Fort Collins Police'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%AOA Estes Park Poli%' THEN 'Assist to Estes Park Police'
-    				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%AOA Loveland Pol%' THEN 'Assist to Loveland Police'
+    			WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%AOA Loveland Pol%' THEN 'Assist to Loveland Police'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE 'CIRT%' THEN 'Assist to Other LE Agency'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%AOA Other Law Agency%' THEN 'Assist to Other LE Agency'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '18-18-405%' THEN 'Drug Law Violation'
@@ -69,7 +70,7 @@ try:
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Opium%' THEN 'Drug Law Violation'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Controlled Substance%' THEN 'Drug Law Violation'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Fentanyl%' THEN 'Drug Law Violation'
-    				WHEN IncidentOffense.ViolationCodeReference_Description LIKE 'FC-17-191%' THEN 'Drug Law Violation'
+    			WHEN IncidentOffense.ViolationCodeReference_Description LIKE 'FC-17-191%' THEN 'Drug Law Violation'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Protection Order%' THEN 'Protection Order Violation'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Tampering%' THEN 'Criminal Tampering'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Arson%' THEN 'Arson'
@@ -142,13 +143,13 @@ try:
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '18-8-212%' THEN 'Bond Violation'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '18-8-704%' THEN 'Intimidating a Witness or Victim'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '1204(1f)%' THEN 'Parking Violation'
-    				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Prostitution%' THEN 'Prostitution'
+    			WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Prostitution%' THEN 'Prostitution'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '18-9-116%' THEN 'Throwing Missiles at Vehicles'
-    				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '18-3-302%' THEN 'Kidnapping'
+    			WHEN IncidentOffense.ViolationCodeReference_Description LIKE '18-3-302%' THEN 'Kidnapping'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE 'LC-98-02%' THEN 'Possession of Tobacco by Minors'
-    				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '18-6-701%' THEN 'Contributing to the Delinquency of a Minor'
+    			WHEN IncidentOffense.ViolationCodeReference_Description LIKE '18-6-701%' THEN 'Contributing to the Delinquency of a Minor'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '18-5-309%' THEN 'Money Laundering'
-    				--WHEN IncidentOffense.ViolationCodeReference_Description LIKE '' THEN ''
+    			--WHEN IncidentOffense.ViolationCodeReference_Description LIKE '' THEN ''
 				ELSE IncidentOffense.ViolationCodeReference_Description
 			END AS 'Description'
 			,Incident.CaseNumber AS 'Case_n'
@@ -345,7 +346,7 @@ try:
 	current_year = time.strftime("%Y") # for finding folder year
 
 	clery_log_file_name = "daily_log_" + todays_date
-	clery_log_file = f"C:\\Clery\\DailyLogArchive\\{clery_log_file_name}.csv" # Update this one to save to proper year
+	clery_log_file = f"C:\\Clery\\DailyLogArchive\\{clery_log_file_name}.csv"
 	output_file = 'C:\\Clery\\Daily_Crime_Log.csv'
 
 	# Create the database connection string and engine
