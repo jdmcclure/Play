@@ -40,16 +40,16 @@ try:
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%42-%' THEN 'Traffic Violation'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '603(1)%' THEN 'Traffic Violation'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Unregistered Vehicle%' THEN 'Traffic Violation'
-    			WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Failed TO STOP AT RED LIGHT%' THEN 'Traffic Violation'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%No Proof of Insurance%' THEN 'Traffic Violation'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Expired Plates%' THEN 'Traffic Violation'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Speeding%' THEN 'Traffic Violation'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Designated Lane%' THEN 'Traffic Violation'
+				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Failed TO STOP AT RED LIGHT%' THEN 'Traffic Violation'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%FAILED TO SIGNAL FROM PARK%' THEN 'Traffic Violation'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '1409(2)%' THEN 'Traffic Violation'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%DROVE WRONG WAY%' THEN 'Traffic Violation'
-    			WHEN IncidentOffense.ViolationCodeReference_Description LIKE 'FC-17-70%' THEN 'False ID'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Possessed (Fictitiou%' THEN 'False ID'
+				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%FC-17-70%' THEN 'False ID'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Bodily Waste%' THEN 'Depositing Bodily Waste'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Fire Agency%' THEN 'Assist to Fire Dept'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Fire Authority%' THEN 'Assist to Fire Dept'
@@ -58,7 +58,7 @@ try:
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%AOA Larimer County%' THEN 'Assist to LCSO'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%AOA Fort Collins%' THEN 'Assist to Fort Collins Police'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%AOA Estes Park Poli%' THEN 'Assist to Estes Park Police'
-    			WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%AOA Loveland Pol%' THEN 'Assist to Loveland Police'
+				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%AOA LOVELAND POL%' THEN 'Assist to Loveland Police'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE 'CIRT%' THEN 'Assist to Other LE Agency'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%AOA Other Law Agency%' THEN 'Assist to Other LE Agency'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '18-18-405%' THEN 'Drug Law Violation'
@@ -70,7 +70,7 @@ try:
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Opium%' THEN 'Drug Law Violation'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Controlled Substance%' THEN 'Drug Law Violation'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Fentanyl%' THEN 'Drug Law Violation'
-    			WHEN IncidentOffense.ViolationCodeReference_Description LIKE 'FC-17-191%' THEN 'Drug Law Violation'
+				WHEN IncidentOffense.ViolationCodeReference_Description LIKE 'FC-17-191%' THEN 'Drug Law Violation'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Protection Order%' THEN 'Protection Order Violation'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Tampering%' THEN 'Criminal Tampering'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Arson%' THEN 'Arson'
@@ -143,14 +143,14 @@ try:
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '18-8-212%' THEN 'Bond Violation'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '18-8-704%' THEN 'Intimidating a Witness or Victim'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '1204(1f)%' THEN 'Parking Violation'
-    			WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Prostitution%' THEN 'Prostitution'
+				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%Prostitution%' THEN 'Prostitution'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '18-9-116%' THEN 'Throwing Missiles at Vehicles'
-    			WHEN IncidentOffense.ViolationCodeReference_Description LIKE '18-3-302%' THEN 'Kidnapping'
+				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '18-3-302%' THEN 'Kidnapping'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE 'LC-98-02%' THEN 'Possession of Tobacco by Minors'
-    			WHEN IncidentOffense.ViolationCodeReference_Description LIKE '18-6-701%' THEN 'Contributing to the Delinquency of a Minor'
-				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '18-5-309%' THEN 'Money Laundering'
-    			--WHEN IncidentOffense.ViolationCodeReference_Description LIKE '' THEN ''
-				ELSE IncidentOffense.ViolationCodeReference_Description
+				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '18-6-701%' THEN 'Contributing to the Delinquency of a Minor'
+				WHEN IncidentOffense.ViolationCodeReference_Description LIKE 'FC-17-3%' THEN 'Failure to Appear'
+				WHEN IncidentOffense.ViolationCodeReference_Description LIKE 'FC-17-128%' THEN 'Obstructing a Passageway'
+				ELSE UPPER(LEFT(IncidentOffense.ViolationCodeReference_Description, 1)) + LOWER(RIGHT(IncidentOffense.ViolationCodeReference_Description, LEN(IncidentOffense.ViolationCodeReference_Description)-1))
 			END AS 'Description'
 			,Incident.CaseNumber AS 'Case_n'
 			,FORMAT(IncidentEvent.dateReported, 'MM/dd/yyyy HH:mm') AS 'Reported'
@@ -197,7 +197,7 @@ try:
 				WHEN IncidentEvent.address_streetAddress LIKE '1700 W Plum%' THEN 'University Village - 1700'
 				WHEN IncidentEvent.address_streetAddress LIKE '501 W Lake%' THEN 'Walnut'
 				WHEN IncidentEvent.address_streetAddress LIKE '1009 W Laurel%' THEN 'Westfall Hall'
-				--General Campus Buildings
+					--General Campus Buildings
 				WHEN IncidentEvent.address_streetAddress LIKE '900 Oval%' THEN 'Admin Building'
 				WHEN IncidentEvent.address_streetAddress LIKE '701 W Pitkin%' THEN 'Alumni Center'
 				WHEN IncidentEvent.address_streetAddress LIKE '711 Oval%' Then 'Ammons Hall'
@@ -286,7 +286,7 @@ try:
 			,IncidentEvent.status_Description AS 'status' --for easier classification in CASE statement below
 			,IncidentEvent.disposition_Description AS 'dispo' --only for dispo classification in next level
 			,ROW_NUMBER() OVER (partition BY IncidentOffense.ViolationCodeReference_Description ORDER BY Incident.CaseNumber DESC) AS incident_count
-		 FROM   
+		FROM   
 			InformRMSReports.Reporting.Incident Incident
 			INNER JOIN InformRMSReports.Reporting.IncidentEvent IncidentEvent
 				ON Incident.Id = IncidentEvent.Incident_Id
@@ -294,7 +294,7 @@ try:
 				ON Incident.Id = IncidentOffense.Incident_Id
 			INNER JOIN InformRMSReports.Reporting.IncidentOfficer
 				ON Incident.Id = IncidentOfficer.Incident_Id
-		 WHERE  
+		WHERE  
 			Incident.CaseNumber LIKE 'CS%'
 			AND
 			IncidentOfficer.involvementType_Description = 'Reporting'
@@ -334,10 +334,8 @@ try:
 			incidents
 		WHERE
 			Description NOT IN ('Traffic Violation', 'Error/Cancelled')
-			--AND
-			--incident_count % 2 <> 0
 		ORDER BY
-			Case_n
+			Case_n;
 	"""
 
 	# Set date and time format for file name
