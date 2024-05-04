@@ -59,6 +59,7 @@ try:
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%AOA Fort Collins%' THEN 'Assist to Fort Collins Police'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%AOA Estes Park Poli%' THEN 'Assist to Estes Park Police'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%AOA LOVELAND POL%' THEN 'Assist to Loveland Police'
+				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%AOA WINDSOR POL%' THEN 'Assist to Windsor Police'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE 'CIRT%' THEN 'Assist to Other LE Agency'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%AOA Other Law Agency%' THEN 'Assist to Other LE Agency'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '18-18-405%' THEN 'Drug Law Violation'
@@ -149,8 +150,11 @@ try:
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE 'LC-98-02%' THEN 'Possession of Tobacco by Minors'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '18-6-701%' THEN 'Contributing to the Delinquency of a Minor'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE 'FC-17-3%' THEN 'Failure to Appear'
+				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%commit other misde%' THEN 'Criminal Attempt to Commit Other Crime'
+				WHEN IncidentOffense.ViolationCodeReference_Description LIKE '%forgery%' THEN 'Forgery'
 				WHEN IncidentOffense.ViolationCodeReference_Description LIKE 'FC-17-128%' THEN 'Obstructing a Passageway'
-				ELSE UPPER(LEFT(IncidentOffense.ViolationCodeReference_Description, 1)) + LOWER(RIGHT(IncidentOffense.ViolationCodeReference_Description, LEN(IncidentOffense.ViolationCodeReference_Description)-1))
+				--WHEN IncidentOffense.ViolationCodeReference_Description LIKE '' THEN ''
+				ELSE UPPER(LEFT(LTRIM(IncidentOffense.ViolationCodeReference_Description), 1)) + LOWER(RIGHT(IncidentOffense.ViolationCodeReference_Description, LEN(IncidentOffense.ViolationCodeReference_Description)-1))
 			END AS 'Description'
 			,Incident.CaseNumber AS 'Case_n'
 			,FORMAT(IncidentEvent.dateReported, 'MM/dd/yyyy HH:mm') AS 'Reported'
@@ -161,10 +165,14 @@ try:
 			END AS 'Occurred'
 			,CASE
 				--Make location of active sex assault cases confidential
-				WHEN (IncidentEvent.description_Description IN ('^POSXASLT^', 'SEXASSLTFR', 'SEXASSLTFF', 'SEX CRIME', 'Sex Crime')
-					AND (IncidentEvent.status_Description IN ('Active', 'Pending') OR IncidentEvent.status_Description IS NULL))
-					OR (IncidentOffense.ViolationCodeReference_Description LIKE '%Sexual%' 
-					AND (IncidentEvent.status_Description IN ('Active', 'Pending') OR IncidentEvent.status_Description IS NULL)) 
+				WHEN 
+					(IncidentEvent.description_Description IN ('^POSXASLT^', 'SEXASSLTFR', 'SEXASSLTFF', 'SEX CRIME', 'Sex Crime')
+						AND 
+					(IncidentEvent.status_Description IN ('Active', 'Pending') OR IncidentEvent.status_Description IS NULL))
+					OR 
+					(IncidentOffense.ViolationCodeReference_Description LIKE '%Sexual%' 
+						AND 
+					(IncidentEvent.status_Description IN ('Active', 'Pending') OR IncidentEvent.status_Description IS NULL)) 
 					THEN 'Confidential'
 				--Then provide common name for locations
 					--Residence Halls and Apartments
@@ -321,7 +329,7 @@ try:
 				WHEN status = 'PENDING' THEN 'Pending'
 				WHEN status = 'Unfounded' THEN 'Unfounded'
 				WHEN status = 'ACTIVE' THEN 'Active/Open Investigation'
-				WHEN Description IN ('Assist to Fort Collins Police', 'Assist to LCSO', 'Assist to Other LE Agency') THEN 'Closed: Assist to Other LE Agency'
+				WHEN Description IN ('Assist to Fort Collins Police', 'Assist to LCSO', 'Assist to Windsor Police', 'Assist to Other LE Agency') THEN 'Closed: Assist to Other LE Agency'
 				WHEN Description = 'Assist to Fire Dept' THEN 'Closed: Assist to Fire Dept'
 				WHEN Description = 'Assist to Medical' THEN 'Closed: Assist to Medical'
 				WHEN (Description IN ('Liquor Law Violation', 'Drug Law Violation', 'Weapon Law Violation') AND status IN ('CLOSED - INFORMATION REPORT', 'EXCEPTIONALLY CLEARED', 'CLEARED')) THEN 'Closed: Disciplinary Referral'
@@ -333,7 +341,7 @@ try:
 		FROM
 			incidents
 		WHERE
-			Description NOT IN ('Traffic Violation', 'Error/Cancelled')
+			Description NOT IN ('Traffic Violation', 'Error/Cancelled', 'Lost Property', 'Found Property', 'Assist to Medical')
 		ORDER BY
 			Case_n;
 	"""
